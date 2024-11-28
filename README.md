@@ -34,3 +34,4 @@ Copy code
    ```bash
    cd multi-step-form-main
    ```
+3. Open index.html in your browser to view the project.
