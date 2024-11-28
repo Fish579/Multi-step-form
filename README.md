@@ -35,3 +35,16 @@ Copy code
    cd multi-step-form-main
    ```
 3. Open index.html in your browser to view the project.
+
+## Preview
+Include a screenshot or GIF showing the navigation and the form with the updated submit button.
+
+## Challenges Faced
+- Adjusting navigation styling for small screens.
+- Ensuring proper behavior of the submit button on the fourth page.
+- Future Improvements
+Add backend functionality for form submission.
+Include animations for navigation transitions.
+Optimize performance for larger projects.
+## Author
+This project is written by fish579.
