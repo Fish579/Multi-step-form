@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Frontend Mentor | Multi-step form</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #d5e2ee;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .container {
+      display: flex;
+      max-width: 800px;
+      width: 800px;
+      height: auto;
+      background-color: #ffffff;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      transition: all 0.5s ease;
+    }
+    .page-indicator {
+      width: 150px;
+      background-image: url('./assets/images/bg-sidebar-desktop.svg');
+      background-repeat: no-repeat;
+      background-position: center;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      padding: 20px;
+      border-radius: 8px 0 0 8px;
+      box-shadow: inset -1px 0 0 #cccccc;
+    }
+    .page-indicator button {
+      font-size: 15px;
+      font-weight: bold;
+      padding: 10px;
+      margin: 5px 0;
+      background-color: transparent;
+      color: #ffffff;
+      border: 1px solid white;
+      align-items: center;
+      width: 35px;
+      height: 35px;
+      border-radius: 50%;
+      cursor: pointer;
+    }
+    .page-indicator button.active {
+      background-color: #0056b3;
+      border-color: #fff;
+      color: black;
+    }
+    .content-container {
+      padding: 20px;
+      flex-grow: 1;
+    }
+    .content-container h1 {
+      margin: 0;
+      font-size: 2rem;
+    }
+    .form-group {
+      margin: 15px 0;
+    }
+    .form-group label {
+      display: block;
+      font-size: 1.1rem;
+      margin-bottom: 5px;
+    }
+    .form-group input {
+      width: 100%;
+      padding: 10px;
+      font-size: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    .navigation {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 20px;
+    }
+    .navigation button {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      background-color: #007BFF;
+      color: #ffffff;
+      cursor: pointer;
+    }
+    .navigation button:disabled {
+      background-color: #cccccc;
+      cursor: not-allowed;
+    }
+    .hidden {
+      visibility: hidden;
+    }
+    .switch {
+  position: relative;
+  display: inline-block;
+  width: 60px; 
+  height: 34px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  transition: 0.4s;
+  border-radius: 34px;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  border-radius: 50%;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  transition: 0.4s;
+}
+
+input:checked + .slider {
+  background-color: #007BFF;
+}
+input:checked + .slider:before {
+  transform: translateX(26px);
+}
+input:not(:checked) + .slider {
+  background-color: #4CAF50; 
+}
+input:not(:checked) + .slider:before {
+  transform: translateX(0px);
+}
+#billingCycleLabel {
+  font-size: 1.1rem;
+  margin-left: 10px;
+  color: #333;
+}
+    .fade {
+      animation: fade 0.5s ease-in-out;
+    }
+    .plan-button.active {
+      background-color: #0056b3;
+      color: #fff;
+      font-weight: bold;
+    }
+    .thank-you {
+      text-align: center;
+      padding: 50px;
+    }
+
+.thank-you h1 {
+  font-size: 2.5rem;
+  color: #007BFF;
+}
+
+.thank-you p {
+  font-size: 1.2rem;
+  margin: 20px 0;
+  color: #555;
+}
+
+.thank-you button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  background-color: #007BFF;
+  color: #ffffff;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.thank-you button:hover {
+  background-color: #0056b3;
+}
+.plan-button {
+  width: 100px;
+  height: 100px;
+  border-radius: 5px;
+  margin-top: 20px;
+  margin-left: 20px;
+  background-color: transparent;
+  border: 2px solid #ccc; 
+  transition: background-color 0.3s, border-color 0.3s;
+}
+
+.plan-button:hover {
+  border-color: #0D47A1;
+}
+
+.plan-button.selected {
+  background-color: #0D47A1; 
+  color: white;
+  border-color: #0D47A1; 
+}
+
+.plan-button.selected:hover {
+  background-color: #1E88E5; 
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+.payment-method-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.payment-method-option {
+  display: flex;
+  align-items: center;
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.payment-method-option:hover {
+  background-color: #f0f0f0;
+}
+
+.payment-method-option input[type="radio"] {
+  margin-right: 10px;
+}
+
+.payment-method-option label {
+  display: flex;
+  align-items: flex-start;
+  width: 100%;
+}
+
+.span-container {
+  display: flex;
+  flex-direction: column;
+  margin-right: auto; 
+}
+
+.span-bold {
+  font-weight: bold; 
+}
+
+.payment-method-option span {
+  font-size: 0.9rem;
+  color: #333;
+}
+
+.payment-method-option .span-price {
+  margin-left: auto;
+  margin-top: auto;
+  font-weight: normal;
+  color: #007BFF;
+}
+
+.payment-method-option input[type="radio"]:checked + label {
+  font-weight: bold;
+  color: #007BFF;
+}
+.input-invalid {
+    border-color: red;
+  }
+
+  .error-message {
+    color: red;
+    font-size: 0.9rem;
+    margin-top: 5px;
+  }
+
+    @keyframes fade {
+      0% {
+        opacity: 0;
+      }
+      100% {
+        opacity: 1;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="page-indicator" id="pageIndicator" role="navigation" aria-label="Step indicators"></div>    
+    <div class="content-container">
+      <div id="content"></div>
+      <div class="navigation">
+        <button id="prev" class="hidden" aria-hidden="true" style="background: none; color: black;" aria-label="Go Back">Go Back</button>
+        <button id="next" aria-label="Next Page">Next Page</button>
+      </div>
+      <div id="totalPrice" class="total-price"></div>
+    </div>
+  </div>
+
+  <script>
+    const pages = [
+      { title: "Personal info", content: "Please provide your name, email address, and phone number." },
+      { title: "Select Your Plan", content: "You have the option of monthly or yearly billing." },
+      { title: "Pick add-ons", content: "Add-ons help enhance your gaming experience." },
+      { title: "Finishing up", content: "Double-check everything looks OK before confirming." }
+    ];
+
+    let currentPage = 0;
+    let formData = JSON.parse(localStorage.getItem('formData')) || {
+      name: "",
+      email: "",
+      phone: "",
+      plan: "",
+      paymentMethod: "",
+      billingCycle: "monthly",
+      selectedAddons: []
+    };
+
+    const contentDiv = document.getElementById("content");
+    const prevButton = document.getElementById("prev");
+    const nextButton = document.getElementById("next");
+    const pageIndicator = document.getElementById("pageIndicator");
+
+    function updatePage() {
+      contentDiv.classList.add('fade');
+      setTimeout(() => contentDiv.classList.remove('fade'), 500);
+
+      if (currentPage === pages.length) {
+        showThankYouPage();
+      } else {
+        showPageContent();
+      }
+
+      updatePageIndicator();
+      toggleNavigationButtons();
+    }
+
+    function showThankYouPage() {
+        contentDiv.innerHTML = `
+          <div class="thank-you">
+            <img src="./assets/images/icon-checkmark.svg" alt="Icon" class="checkmark-icon" />
+            <h1>Thank You!</h1>
+            <p>Thanks for confirming your subscription! We hope you have fun 
+              using our platform. If you ever need support, please feel free 
+              to email us at <a href="mailto:support@example.com">support@loremgaming.com</a>.</p>
+            <button onclick="restartForm()">Restart</button>
+          </div>
+        `;
+        nextButton.classList.add('hidden');
+        prevButton.classList.add('hidden');
+        pageIndicator.classList.remove('hidden');
+      }
+
+    function showPageContent() {
+      const page = pages[currentPage];
+      contentDiv.innerHTML = `
+        <h1>${page.title}</h1>
+        <p>${page.content}</p>
+      `;
+
+      if (currentPage === 0) {
+        showPersonalInfoForm();
+      } else if (currentPage === 1) {
+        showPlanSelection();
+      } else if (currentPage === 2) {
+        showPaymentMethodSelection();
+      } else if (currentPage === 3) {
+        showSummary();
+      }
+    }
+
+    function showPersonalInfoForm() {
+      contentDiv.innerHTML += `
+        <div class="form-group">
+          <label for="inputName">Name</label>
+          <input type="text" id="inputName" name="name" style="width: 90%;" placeholder="e.g. Stephen King" value="${formData.name}">
+        </div>
+        <div class="form-group">
+          <label for="inputEmail">Email</label>
+          <input type="email" id="inputEmail" name="email" style="width: 90%;" placeholder="e.g. stephenking@lorem.com" value="${formData.email}">
+        </div>
+        <div class="form-group">
+          <label for="inputPhone">Phone</label>
+          <input type="tel" id="inputPhone" name="phone"  style="width: 90%;" placeholder="e.g. +1 234 567 890" value="${formData.phone}">
+        </div>
+      `;
+    }
+
+    function showPlanSelection() {
+      contentDiv.innerHTML += `
+        <button class="plan-button" data-plan="Arcade" onclick="selectPlan('Arcade')">
+          <img src="./assets/images/icon-arcade.svg" alt="Icon" class="btn-icon" />
+          <span style="font-size: 20px;">Arcade</span> $<span id="arcadePrice">9</span>/mo
+        </button>
+        <button class="plan-button" data-plan="Advanced" onclick="selectPlan('Advanced')">
+          <img src="./assets/images/icon-advanced.svg" alt="Icon" class="btn-icon" />
+          <span style="font-size: 20px;">Advanced</span> $<span id="advancedPrice">12</span>/mo
+        </button>
+        <button class="plan-button" data-plan="Pro" onclick="selectPlan('Pro')">
+          <img src="./assets/images/icon-pro.svg" alt="Icon" class="btn-icon" />
+          <span style="font-size: 20px;">Pro</span> $<span id="proPrice">15</span>/mo
+        </button>
+        <div class="toggle-container">
+          <label for="billingToggle">Billing Cycle:</label>
+          <label class="switch">
+            <input type="checkbox" id="billingToggle" onchange="toggleBillingCycle()">
+            <span class="slider"></span>
+          </label>
+          <span id="billingCycleLabel">${formData.billingCycle}</span>
+        </div>
+      `;
+      updatePrices();
+    }
+
+    function showPaymentMethodSelection() {
+      contentDiv.innerHTML += `
+        <div class="payment-method-container">
+          <div class="payment-method-option">
+            <input type="checkbox" id="onlineService" name="service" value="Online Service" onchange="updateSelectedOptions()">
+            <label for="onlineService">
+              <div class="span-container">
+                <span class="span-bold">Online Service</span>
+                <span>Access to multiplayer games</span>
+              </div>
+              <span class="span-price">+$1/mo</span>
+            </label>
+          </div>
+
+          <div class="payment-method-option">
+            <input type="checkbox" id="largerStorage" name="service" value="Larger Storage" onchange="updateSelectedOptions()">
+            <label for="largerStorage">
+              <div class="span-container">
+                <span class="span-bold">Larger Storage</span>
+                <span>Extra 1TB of cloud save</span>
+              </div>
+              <span class="span-price">+$2/mo</span>
+            </label>
+          </div>
+
+          <div class="payment-method-option">
+            <input type="checkbox" id="customizableProfile" name="service" value="Customizable Profile" onchange="updateSelectedOptions()">
+            <label for="customizableProfile">
+              <div class="span-container">
+                <span class="span-bold">Customizable Profile</span>
+                <span>Custom theme on your profile</span>
+              </div>
+              <span class="span-price">+$2/mo</span>
+            </label>
+          </div>
+        </div>
+      `;
+    }
+
+    function updateTotalPrice() {
+    let total = 0;
+
+    const selectedPlan = formData.plan;
+    if (selectedPlan) {
+        const planPrice = selectedPlan === 'Basic' ? (formData.billingCycle === "monthly" ? 10 : 100)
+            : selectedPlan === 'Standard' ? (formData.billingCycle === "monthly" ? 15 : 150)
+            : (formData.billingCycle === "monthly" ? 25 : 250);
+        total += planPrice;
+    }
+
+    formData.selectedAddons.forEach(addon => total += addon.price);
+
+    if (currentPage === 3) {
+        totalPriceDiv.textContent = `Total: $${total}`;
+    } else {
+        totalPriceDiv.textContent = '';
+    }
+}
+
+function showSummary() {
+    contentDiv.innerHTML = `
+      <h2>Summary</h2>
+      <p><strong>Plan: </strong>${formData.plan}</p>
+      <p><strong>Billing Cycle: </strong>${formData.billingCycle}</p>
+      <p><strong>Add-ons:</strong></p>
+      <ul>
+        ${formData.selectedAddons.length > 0 ? 
+            formData.selectedAddons.map(addon => `<li>${addon.name} - $${addon.price}</li>`).join('') : 
+            '<li>No add-ons selected</li>'
+        }
+      </ul>
+    `;
+
+    updateTotalPrice();
+}
+
+    function updatePageIndicator() {
+      const pageTitles = ["Step 1 \n Your info", "Step 2 \n Select plan", "Step 3 \n Add-ons", "Step 4 \n Summary"];
+      pageIndicator.innerHTML = pages.map((_, index) => `
+        <button class="${index === currentPage ? 'active' : ''}" onclick="goToPage(${index})">
+          ${index + 1}
+        </button>
+        <span class="button-label" style="margin-left: 70px; margin-top: -30px; color: white; opacity: 80%;">${pageTitles[index]}</span>
+      `).join('');
+    }
+
+    function toggleNavigationButtons() {
+  prevButton.classList.toggle('hidden', currentPage === 0);
+  nextButton.textContent = currentPage === pages.length - 1 ? 'Submit' : 'Next Page';
+}
+
+
+    function goToPage(pageIndex) {
+      currentPage = pageIndex;
+      updatePage();
+    }
+
+    function validatePage() {
+  let isValid = true;
+  const nameField = document.getElementById('inputName');
+  const emailField = document.getElementById('inputEmail');
+  const phoneField = document.getElementById('inputPhone');
+  const planButtons = document.querySelectorAll('.plan-button');
+  
+  resetErrors();
+  
+  if (currentPage === 0) {
+    if (!nameField.value.trim()) {
+      showError(nameField, 'Name is required');
+      isValid = false;
+    }
+    if (!emailField.value.trim() || !/\S+@\S+\.\S+/.test(emailField.value)) {
+      showError(emailField, 'Valid email is required');
+      isValid = false;
+    }
+    if (!phoneField.value.trim()) {
+      showError(phoneField, 'Phone number is required');
+      isValid = false;
+    }
+  } else if (currentPage === 1) {
+    if (!formData.plan) {
+      alert('Please select a plan');
+      isValid = false;
+    }
+  } else if (currentPage === 2) {
+    if (formData.selectedAddons.length === 0) {
+      alert('Please select at least one add-on');
+      isValid = false;
+    }
+  }
+  return isValid;
+}
+
+
+function resetErrors() {
+  document.querySelectorAll('.error-message').forEach(message => message.remove());
+  document.querySelectorAll('.input-invalid').forEach(field => field.classList.remove('input-invalid'));
+}
+
+  function showError(field, message) {
+    field.classList.add('input-invalid');
+    const errorMessage = document.createElement('div');
+    errorMessage.classList.add('error-message');
+    errorMessage.textContent = message;
+    field.parentElement.appendChild(errorMessage);
+  }
+
+
+  function updatePrices() {
+  const isMonthly = formData.billingCycle === 'monthly';
+  const priceMultiplier = isMonthly ? 1 : 10; 
+
+  document.getElementById('arcadePrice').textContent = priceMultiplier * 9;
+  document.getElementById('advancedPrice').textContent = priceMultiplier * 12;
+  document.getElementById('proPrice').textContent = priceMultiplier * 15;
+}
+
+    function toggleBillingCycle() {
+      formData.billingCycle = document.getElementById('billingToggle').checked ? 'yearly' : 'monthly';
+      updatePrices();
+      document.getElementById('billingCycleLabel').textContent = formData.billingCycle;
+    }
+
+     function selectPlan(plan) {
+      formData.plan = plan;
+      document.querySelectorAll('.plan-button').forEach(button => {
+        button.classList.toggle('selected', button.getAttribute('data-plan') === plan);
+      });
+    
+
+  updatePrices();
+}
+
+
+function updateSelectedOptions() {
+      const selectedOptions = [];
+      document.querySelectorAll('.payment-method-option input:checked').forEach(input => {
+        const option = {
+          name: input.value,
+          price: parseInt(input.parentElement.querySelector('.span-price').textContent.replace(/[^\d]/g, ''))
+        };
+        selectedOptions.push(option);
+      });
+      formData.selectedAddons = selectedOptions;
+    }
+
+    function saveDataToLocalStorage() {
+      localStorage.setItem('formData', JSON.stringify(formData));
+    }
+
+    function restartForm() {
+      formData = {
+        name: "",
+        email: "",
+        phone: "",
+        plan: "",
+        paymentMethod: "",
+        billingCycle: "monthly",
+        selectedAddons: []
+      };
+      localStorage.removeItem('formData');
+      currentPage = 0;
+      updatePage();
+    }
+
+    nextButton.addEventListener("click", () => {
+      if (validatePage()) {
+        currentPage++;
+        updatePage();
+      }
+    });
+
+    prevButton.addEventListener("click", () => {
+      currentPage--;
+      updatePage();
+    });
+
+    updatePage();
+
+  </script>
+</body>
+</html>
