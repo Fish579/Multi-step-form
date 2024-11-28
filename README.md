@@ -1,4 +1,4 @@
-# Frontend Mentor | Navigation and Form Button Update
+# Frontend Mentor | Multi-Step-Form-Main
 
 This project is part of the **Frontend Mentor** challenges. It involves creating a responsive navigation system and updating the functionality of a form to include a `submit` button for the fourth page.
 
