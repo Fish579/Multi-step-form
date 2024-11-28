@@ -42,9 +42,9 @@ Include a screenshot or GIF showing the navigation and the form with the updated
 ## Challenges Faced
 - Adjusting navigation styling for small screens.
 - Ensuring proper behavior of the submit button on the fourth page.
-- Future Improvements
-Add backend functionality for form submission.
-Include animations for navigation transitions.
-Optimize performance for larger projects.
+## Future Improvements
+- Add backend functionality for form submission.
+- Include animations for navigation transitions.
+- Optimize performance for larger projects.
 ## Author
 This project is written by fish579.
